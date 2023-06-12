@@ -15,6 +15,7 @@ title_lis = []
 cat_lis = []
 price_lis = []
 desc_lis = []
+prod_link = []
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 for i in range(start,end+1):
@@ -28,6 +29,9 @@ for i in range(start,end+1):
 
     prod_link_lis = [ c['href'] for c in soup.find_all('a',{'class':'woocommerce-loop-product__link'})]
     print(prod_link_lis)
+
+    for c_link in prod_link_lis:
+        prod_link.append(c_link)
 
     for link in prod_link_lis:
 
@@ -57,7 +61,7 @@ df['Name'] = title_lis
 df['Category'] = cat_lis 
 df['Price'] = price_lis 
 df['Description'] = desc_lis 
-
+df['Product Link'] = prod_link
 
 
 # File Output Name
