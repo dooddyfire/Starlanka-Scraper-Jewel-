@@ -30,29 +30,32 @@ for i in range(start,end+1):
     prod_link_lis = [ c['href'] for c in soup.find_all('a',{'class':'woocommerce-loop-product__link'})]
     print(prod_link_lis)
 
-    for c_link in prod_link_lis:
-        prod_link.append(c_link)
+
+        
 
     for link in prod_link_lis:
+        try:
+            driver.get(link)
+            prod_link.append(link)
+            soupx = BeautifulSoup(driver.page_source,'html.parser')
+            
+            title = soupx.find('h1',{'class':'product-title'}).text.strip()
+            print(title)
+            title_lis.append(title)
 
-        driver.get(link)
-        soupx = BeautifulSoup(driver.page_source,'html.parser')
-        
-        title = soupx.find('h1',{'class':'product-title'}).text.strip()
-        print(title)
-        title_lis.append(title)
+            cat = soupx.find('nav',{'class':'woocommerce-breadcrumb'}).text.replace('HOME','').strip()
+            print(cat)
+            cat_lis.append(cat)
 
-        cat = soupx.find('nav',{'class':'woocommerce-breadcrumb'}).text.replace('HOME','').strip()
-        print(cat)
-        cat_lis.append(cat)
+            price = soupx.find('span',{'class':'woocommerce-Price-amount'}).text 
+            price_lis.append(price)
+            print(price)
 
-        price = soupx.find('span',{'class':'woocommerce-Price-amount'}).text 
-        price_lis.append(price)
-        print(price)
-
-        desc = soupx.find('div',{'class':'product-short-description'}).text 
-        print(desc)
-        desc_lis.append(desc)
+            desc = soupx.find('div',{'class':'product-short-description'}).text 
+            print(desc)
+            desc_lis.append(desc)
+        except: 
+            continue
     
 
 df = pd.DataFrame()
