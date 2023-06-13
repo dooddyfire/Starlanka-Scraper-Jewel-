@@ -18,10 +18,11 @@ desc_lis = []
 prod_link = []
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
+
 for i in range(start,end+1):
     url = 'https://www.starlanka.com/gemstones/page/{}/'.format(i)
 
-    
+    print("Page = ",i)    
     driver.get(url)
 
 
@@ -36,7 +37,7 @@ for i in range(start,end+1):
     for link in prod_link_lis:
         try:
             driver.get(link)
-            prod_link.append(link)
+            #prod_link.append(link)
             soupx = BeautifulSoup(driver.page_source,'html.parser')
             
             title = soupx.find('h1',{'class':'product-title'}).text.strip()
@@ -64,7 +65,6 @@ df['Name'] = title_lis
 df['Category'] = cat_lis 
 df['Price'] = price_lis 
 df['Description'] = desc_lis 
-df['Product Link'] = prod_link
 
 
 # File Output Name
